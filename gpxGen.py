@@ -33,7 +33,7 @@ root.set('xsi:schemaLocation', "http://www.topografix.com/GPX/1/1 http://www.top
 
 metadata = ET.SubElement(root, 'metadata')
 time = ET.SubElement(metadata, 'time')
-time.text = '2016-01-07T15:00:00Z'
+time.text = default_startTime.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 trk = ET.SubElement(root, 'trk')
 trkseg = ET.SubElement(trk, 'trkseg')
@@ -48,4 +48,4 @@ create_duration(default_startTime, '35.0000000', default_lon, 60, 1, 0)
 
 tree = ET.ElementTree(root)
 ET.dump(root)
-tree.write("updated.gpx", encoding="UTF-8", xml_declaration=True, default_namespace=None, method="xml")
+#tree.write("updated.gpx", encoding="UTF-8", xml_declaration=True, default_namespace=None, method="xml")
