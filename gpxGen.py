@@ -28,7 +28,8 @@ def create_duration ( startTime, startLat, startLon, seconds, paceSeconds, grade
         #calculate elevation based on grade
         print currentTime.strftime("%Y-%m-%dT%H:%M:%SZ")
         print currentLat
-        create_trkpt(trkseg, currentLat, startLon, '0.0', currentTime.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        if second % 5 == 0:
+            create_trkpt(trkseg, currentLat, startLon, '0.0', currentTime.strftime("%Y-%m-%dT%H:%M:%SZ"))
     return
 
 root = ET.Element('gpx')
