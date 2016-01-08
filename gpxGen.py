@@ -1,6 +1,10 @@
 import xml.etree.ElementTree as ET
+import datetime
+from datetime import timedelta
 
 default_lon = '-84.0704070'
+default_startTime = datetime.datetime.now() + timedelta(hours=-4)
+#a = a + timedelta(seconds=1) //to be used to add a second to existing datetime var
 
 def create_trkpt ( trkseg, lat, lon, ele, time ):
     trkpt = ET.SubElement(trkseg, "trkpt")
