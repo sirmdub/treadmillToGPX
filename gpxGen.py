@@ -34,6 +34,7 @@ def create_duration ( startTime, startLat, startLon, seconds, paceSeconds, grade
 
 root = ET.Element('gpx')
 root.set('creator', "Garmin Edge 500")
+root.set('version', "1.1")
 root.set('xmlns', "http://www.topografix.com/GPX/1/1")
 root.set('xmlns:xsi', "http://www.w3.org/2001/XMLSchema-instance")
 root.set('xsi:schemaLocation', "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd")
