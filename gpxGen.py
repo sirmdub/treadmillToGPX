@@ -6,7 +6,7 @@ getcontext().prec = 9
 
 default_lon = '-84.0704070'
 mile_lat_increment = Decimal(.0145000)
-default_startTime = datetime.datetime.now() + timedelta(hours=-4)
+default_startTime = datetime.datetime.now()
 
 def create_trkpt ( trkseg, lat, lon, ele, time ):
     trkpt = ET.SubElement(trkseg, "trkpt")
