@@ -15,14 +15,13 @@ def create_trkpt ( trkseg, lat, lon, ele, time ):
     trkpt_time.text = time
     return
 
-def create_duration ( startTime, startLat, startLon, seconds, miles, grade ):
+def create_duration ( startTime, startLat, startLon, seconds, paceSeconds, grade ):
     currentTime = startTime
     for second in range(seconds):
         currentTime = currentTime + timedelta(seconds=1)
-        #format the date to what garmin expects '2016-01-07T15:00:00Z'
-        #calculate each lon iteration based on miles / seconds
+        #calculate each lon iteration based on seconds duration and paceSeconds
         #calculate elevation based on grade
-        print currentTime
+        print currentTime.strftime("%Y-%m-%dT%H:%M:%SZ")
     return
 
 root = ET.Element('gpx')
