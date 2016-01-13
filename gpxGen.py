@@ -36,9 +36,12 @@ def create_duration ( seconds, paceSeconds, grade ):
         #print currentTime.strftime("%Y-%m-%dT%H:%M:%SZ")
         #print currentLat
         #print currentEle
-        if second % 5 == 0: #TODO: this ignores if its the very last trkpt and could shave up to 4 seconds off the track
+        if second % 5 == 0:
             create_trkpt(trkseg, currentLat, currentLon, currentEle, currentTime.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        #just write the last trackpoint again regardless of if its a dupe, be sure not to miss up to 4 seconds on the last trackpoint
+    create_trkpt(trkseg, currentLat, currentLon, currentEle, currentTime.strftime("%Y-%m-%dT%H:%M:%SZ"))
     return
+
 
 root = ET.Element('gpx')
 root.set('creator', "Garmin Edge 500")
@@ -56,13 +59,6 @@ trkseg = ET.SubElement(trk, 'trkseg')
 
 create_duration(240, 480, Decimal(0))
 create_duration(2160, 540, Decimal(.075))
-
-#create_trkpt(trkseg, '35.0000000', currentLon, '0.0', '2016-01-07T15:00:00Z')
-#create_trkpt(trkseg, '35.0145000', currentLon, '0.0', '2016-01-07T15:08:00Z')
-#create_trkpt(trkseg, '35.0290000', currentLon, '80.4672', '2016-01-07T15:17:00Z')
-#create_trkpt(trkseg, '35.0435000', currentLon, '160.9344', '2016-01-07T15:26:00Z')
-#create_trkpt(trkseg, '35.0580000', currentLon, '241.4016', '2016-01-07T15:35:00Z')
-#create_trkpt(trkseg, '35.0725000', currentLon, '321.8688', '2016-01-07T15:44:00Z')
 
 tree = ET.ElementTree(root)
 #ET.dump(root)
