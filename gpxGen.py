@@ -6,30 +6,40 @@ getcontext().prec = 9
 
 default_lon = '-84.0704070'
 mile_lat_increment = Decimal(.0145000)
+meters_per_mile = Decimal(1609.344)
 default_startTime = datetime.datetime.now()
+currentTime = default_startTime
+currentLat = Decimal(35.0000000)
+currentEle = Decimal(0)
 
 def create_trkpt ( trkseg, lat, lon, ele, time ):
     trkpt = ET.SubElement(trkseg, "trkpt")
     trkpt.set('lat', str(lat))
     trkpt.set('lon', lon)
     trkpt_ele = ET.SubElement(trkpt, 'ele')
-    trkpt_ele.text = ele
+    trkpt_ele.text = str(ele)
     trkpt_time = ET.SubElement(trkpt, 'time')
     trkpt_time.text = time
     return
 
-def create_duration ( startTime, startLat, startLon, seconds, paceSeconds, grade ):
+def create_duration ( startTime, startLat, startLon, seconds, paceSeconds, grade, startEle ):
     latPerSecond = mile_lat_increment / paceSeconds
+    if grade == 0:
+        eleMetersPerSecond = 0
+    else:
+        eleMetersPerSecond = (meters_per_mile * grade) / paceSeconds
     currentTime = startTime
     currentLat = startLat
+    currentEle = startEle
     for second in range(seconds):
         currentTime = currentTime + timedelta(seconds=1)
         currentLat = currentLat + latPerSecond
-        #calculate elevation based on grade
-        print currentTime.strftime("%Y-%m-%dT%H:%M:%SZ")
-        print currentLat
-        if second % 5 == 0:
-            create_trkpt(trkseg, currentLat, startLon, '0.0', currentTime.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        currentEle = currentEle + eleMetersPerSecond
+        #print currentTime.strftime("%Y-%m-%dT%H:%M:%SZ")
+        #print currentLat
+        #print currentEle
+        if second % 5 == 0: #TODO: this ignores if its the very last trkpt and could shave up to 4 seconds off the track
+            create_trkpt(trkseg, currentLat, startLon, currentEle, currentTime.strftime("%Y-%m-%dT%H:%M:%SZ"))
     return
 
 root = ET.Element('gpx')
@@ -46,7 +56,10 @@ time.text = default_startTime.strftime("%Y-%m-%dT%H:%M:%SZ")
 trk = ET.SubElement(root, 'trk')
 trkseg = ET.SubElement(trk, 'trkseg')
 
-create_duration(default_startTime, Decimal(35.0000000), default_lon, 600, 480, 0)
+create_duration(default_startTime, Decimal(35.0000000), default_lon, 240, 480, Decimal(0), currentEle)
+#TODO: second trackpoint starts over at the default starttime and latitude
+#create_duration(currentTime, currentLat, default_lon, 2160, 540, Decimal(.075), currentEle)
+
 #create_trkpt(trkseg, '35.0000000', default_lon, '0.0', '2016-01-07T15:00:00Z')
 #create_trkpt(trkseg, '35.0145000', default_lon, '0.0', '2016-01-07T15:08:00Z')
 #create_trkpt(trkseg, '35.0290000', default_lon, '80.4672', '2016-01-07T15:17:00Z')
