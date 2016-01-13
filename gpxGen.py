@@ -4,12 +4,13 @@ from datetime import timedelta
 from decimal import *
 getcontext().prec = 9
 
+#63.411937, -18.750182 Iceland "Treadmill Winter Island"
 mile_lat_increment = Decimal(.0145000)
 meters_per_mile = Decimal(1609.344)
 default_startTime = datetime.datetime.now()
 currentTime = default_startTime
-currentLat = Decimal(35.0000000)
-currentLon = '-84.0704070'
+currentLat = Decimal(63.411937)
+currentLon = '-18.750182'
 currentEle = Decimal(0)
 
 def create_trkpt ( trkseg, lat, lon, ele, time ):
