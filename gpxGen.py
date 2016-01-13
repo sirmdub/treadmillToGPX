@@ -28,9 +28,7 @@ def create_duration ( startTime, startLat, startLon, seconds, paceSeconds, grade
         eleMetersPerSecond = 0
     else:
         eleMetersPerSecond = (meters_per_mile * grade) / paceSeconds
-    currentTime = startTime
-    currentLat = startLat
-    currentEle = startEle
+    global currentTime, currentLat, currentEle
     for second in range(seconds):
         currentTime = currentTime + timedelta(seconds=1)
         currentLat = currentLat + latPerSecond
@@ -57,8 +55,7 @@ trk = ET.SubElement(root, 'trk')
 trkseg = ET.SubElement(trk, 'trkseg')
 
 create_duration(default_startTime, Decimal(35.0000000), default_lon, 240, 480, Decimal(0), currentEle)
-#TODO: second trackpoint starts over at the default starttime and latitude
-#create_duration(currentTime, currentLat, default_lon, 2160, 540, Decimal(.075), currentEle)
+create_duration(currentTime, currentLat, default_lon, 2160, 540, Decimal(.075), currentEle)
 
 #create_trkpt(trkseg, '35.0000000', default_lon, '0.0', '2016-01-07T15:00:00Z')
 #create_trkpt(trkseg, '35.0145000', default_lon, '0.0', '2016-01-07T15:08:00Z')
