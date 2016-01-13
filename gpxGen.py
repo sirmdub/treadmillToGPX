@@ -4,12 +4,12 @@ from datetime import timedelta
 from decimal import *
 getcontext().prec = 9
 
-default_lon = '-84.0704070'
 mile_lat_increment = Decimal(.0145000)
 meters_per_mile = Decimal(1609.344)
 default_startTime = datetime.datetime.now()
 currentTime = default_startTime
 currentLat = Decimal(35.0000000)
+currentLon = '-84.0704070'
 currentEle = Decimal(0)
 
 def create_trkpt ( trkseg, lat, lon, ele, time ):
@@ -22,7 +22,7 @@ def create_trkpt ( trkseg, lat, lon, ele, time ):
     trkpt_time.text = time
     return
 
-def create_duration ( startTime, startLat, startLon, seconds, paceSeconds, grade, startEle ):
+def create_duration ( seconds, paceSeconds, grade ):
     latPerSecond = mile_lat_increment / paceSeconds
     if grade == 0:
         eleMetersPerSecond = 0
@@ -37,7 +37,7 @@ def create_duration ( startTime, startLat, startLon, seconds, paceSeconds, grade
         #print currentLat
         #print currentEle
         if second % 5 == 0: #TODO: this ignores if its the very last trkpt and could shave up to 4 seconds off the track
-            create_trkpt(trkseg, currentLat, startLon, currentEle, currentTime.strftime("%Y-%m-%dT%H:%M:%SZ"))
+            create_trkpt(trkseg, currentLat, currentLon, currentEle, currentTime.strftime("%Y-%m-%dT%H:%M:%SZ"))
     return
 
 root = ET.Element('gpx')
@@ -54,15 +54,15 @@ time.text = default_startTime.strftime("%Y-%m-%dT%H:%M:%SZ")
 trk = ET.SubElement(root, 'trk')
 trkseg = ET.SubElement(trk, 'trkseg')
 
-create_duration(default_startTime, Decimal(35.0000000), default_lon, 240, 480, Decimal(0), currentEle)
-create_duration(currentTime, currentLat, default_lon, 2160, 540, Decimal(.075), currentEle)
+create_duration(240, 480, Decimal(0))
+create_duration(2160, 540, Decimal(.075))
 
-#create_trkpt(trkseg, '35.0000000', default_lon, '0.0', '2016-01-07T15:00:00Z')
-#create_trkpt(trkseg, '35.0145000', default_lon, '0.0', '2016-01-07T15:08:00Z')
-#create_trkpt(trkseg, '35.0290000', default_lon, '80.4672', '2016-01-07T15:17:00Z')
-#create_trkpt(trkseg, '35.0435000', default_lon, '160.9344', '2016-01-07T15:26:00Z')
-#create_trkpt(trkseg, '35.0580000', default_lon, '241.4016', '2016-01-07T15:35:00Z')
-#create_trkpt(trkseg, '35.0725000', default_lon, '321.8688', '2016-01-07T15:44:00Z')
+#create_trkpt(trkseg, '35.0000000', currentLon, '0.0', '2016-01-07T15:00:00Z')
+#create_trkpt(trkseg, '35.0145000', currentLon, '0.0', '2016-01-07T15:08:00Z')
+#create_trkpt(trkseg, '35.0290000', currentLon, '80.4672', '2016-01-07T15:17:00Z')
+#create_trkpt(trkseg, '35.0435000', currentLon, '160.9344', '2016-01-07T15:26:00Z')
+#create_trkpt(trkseg, '35.0580000', currentLon, '241.4016', '2016-01-07T15:35:00Z')
+#create_trkpt(trkseg, '35.0725000', currentLon, '321.8688', '2016-01-07T15:44:00Z')
 
 tree = ET.ElementTree(root)
 #ET.dump(root)
